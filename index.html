@@ -42,14 +42,36 @@
     .win-content{padding:20px; color:black; flex-grow:1; background:white; overflow-y:auto; font-size:14px;}
 
     /* Klasör Fotoğraf Stili */
-    .photo-grid{display:flex; flex-wrap:wrap; gap:15px;}
-    .photo-item{width:100px; height:100px; border:1px solid #999; object-fit:cover;}
+.photo-grid{
+    display:grid;
+    grid-template-columns:repeat(5,100px);
+    gap:15px;
+    justify-content:start;
+}
+
+.photo-item{
+    width:100px;
+    height:100px;
+    border:1px solid #999;
+    object-fit:cover;
+}
 
     /* Taskbar */
     #taskbar{position:absolute; bottom:0; width:100%; height:40px; background:linear-gradient(#245ed1, #3f8cf3 50%, #245ed1 50%, #1c469e 100%); display:flex; align-items:center; padding:0 15px; color:white; border-top:2px solid #1c469e; z-index:100;}
     #start-btn{background:linear-gradient(#9b59b6, #8e44ad 50%, #9b59b6 100%); padding:3px 12px; border-radius:5px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:5px;}
     #task-items{display:flex; gap:5px; margin-left:10px;}
     .task-item{background:#3a6ea5; padding:4px 12px; border-radius:3px; font-size:12px; cursor:pointer;}
+.taskbar-date{
+    margin-left:auto;
+    padding-right:10px;
+    color:white;
+    font-size:13px;
+    font-family:Tahoma, sans-serif;
+    text-shadow:1px 1px 2px #000;
+    display:flex;
+    align-items:center;
+    height:100%;
+}
 </style>
 </head>
 <body>
@@ -67,32 +89,45 @@
         <div class="icon" onclick="openWindow('win-fufu', 'Fufu Klasörü')"><img src="folder.png"><div>Fufu</div></div>
         <div class="icon" onclick="openWindow('win-player', 'Nyan Player')"><img src="player.png"><div>Nyan Player</div></div>
         <div class="icon" onclick="openWindow('win-note', 'Not Defteri')"><img src="note.png"><div>Notlar</div></div>
-        <div class="icon" onclick="openWindow('win-browser', 'Browser')"><img src="browser.png"><div>Fufu Explorer</div></div>
+        <div class="icon" onclick="openWindow('win-browser', 'Fufu Explorer')"><img src="browser.png"><div>Fufu Explorer</div></div>
     </div>
 
     <div class="game-area">
-        <div class="icon"><img src="sh2.png"><div>SH2</div></div>
+        <div class="icon"><img src="sh2.png"><div>Silent Hill 2</div></div>
         <div class="icon"><img src="manhunt.png"><div>Manhunt</div></div>
         <div class="icon"><img src="postal.png"><div>Postal 2</div></div>
-        <div class="icon"><img src="dangan.png"><div>Dangan</div></div>
-        <div class="icon"><img src="re4.png"><div>RE4</div></div>
+        <div class="icon"><img src="minecraft.png"><div>Minecraft 1.8.9</div></div>
+        <div class="icon"><img src="dangan.png"><div>Danganronpa</div></div>
+        <div class="icon"><img src="re4.png"><div>Resident Evil 4</div></div>
         <div class="icon"><img src="sally.png"><div>Sally Face</div></div>
+        <div class="icon"><img src="fnaf4.png"><div>FNAF4</div></div>
     </div>
 
     <div id="win-pc" class="window"><div class="win-header"><span>Bilgisayar</span><button onclick="closeWindow('win-pc')">X</button></div>
         <div class="win-content">
-            <h3>Sistem Bilgileri (2008 Modeli)</h3><hr><br>
-            <strong>İşlemci:</strong> Intel Core 2 Duo E4500 2.20 GHz<br>
-            <strong>RAM:</strong> 2 GB DDR2 800MHz<br>
-            <strong>Ekran Kartı:</strong> ATI Radeon HD 2600 Pro 512MB<br>
-            <strong>Depolama:</strong> 160 GB Seagate Barracuda HDD<br>
-            <strong>OS:</strong> FufuDows XP Home Edition SP3
+            <h3>Sistem : </h3><hr><br>
+            <strong></strong>Yigitsoft Fufudows XP<br>
+            <strong></strong>Home x64 Edition<br>
+            <strong></strong>Version 14.06.2010<br>
+            <strong></strong>Service Pack 3<br>
+
+            <h3>Kayıt edildi:  </h3><hr><br>
+            <strong></strong>Beray Ç.<br>
+            <strong></strong>Istanbul Maltepe Turkiye<br>
+            <strong></strong>0001-2010-0001-0606-0001-0014<br>
+
+            <h3>Bilgisayar </h3><hr><br>
+            <strong></strong>Intel Core (TM)2 CPU Duo<br>
+            <strong></strong>E4500 @ 2.20 GHz<br>
+            <strong></strong>2.10 GHz ,2.00 GB of RAM<br>
+            <strong></strong>Fiziksel Kart Bilgileri<br>
+
         </div>
     </div>
 
     <div id="win-player" class="window"><div class="win-header"><span>Nyan Player</span><button onclick="closeWindow('win-player')">X</button></div>
         <div class="win-content">
-            <p>Şu an Çalan: NyanCat_theme.mp3</p><br>
+            <p>Şu an Çalan: Nyan Cat Fufu Theme</p><br>
             <button onclick="document.getElementById('bg-music').play()">Oynat</button>
             <button onclick="document.getElementById('bg-music').pause()">Duraklat</button>
             <button onclick="document.getElementById('bg-music').currentTime=0">Başa Sar</button>
@@ -104,25 +139,47 @@
     </div>
 
     <div id="win-cop" class="window"><div class="win-header"><span>Çöp Kutusu</span><button onclick="closeWindow('win-cop')">X</button></div><div class="win-content">Çöp kutusu boş.</div></div>
-    
-    <div id="win-fufu" class="window"><div class="win-header"><span>Fufu Klasörü</span><button onclick="closeWindow('win-fufu')">X</button></div>
-        <div class="win-content">
-            <div class="photo-grid">
-                <img src="foto1.png" class="photo-item">
-                <img src="foto2.png" class="photo-item">
-                <img src="foto3.png" class="photo-item">
-                <img src="foto4.png" class="photo-item">
-                <img src="foto5.png" class="photo-item">
-            </div>
+    <div id="win-fufu" class="window">
+    <div class="win-header">
+        <span>Fufu Klasörü</span>
+        <button onclick="closeWindow('win-fufu')">X</button>
+    </div>
+
+    <div class="win-content">
+        <div class="photo-grid">
+
+            <!-- 1. Satır -->
+            <img src="foto1.png" class="photo-item">
+            <img src="foto2.png" class="photo-item">
+            <img src="foto3.png" class="photo-item">
+            <img src="foto4.png" class="photo-item">
+            <img src="foto5.png" class="photo-item">
+
+            <!-- 2. Satır -->
+            <img src="foto6.png" class="photo-item">
+            <img src="foto7.png" class="photo-item">
+            <img src="foto8.png" class="photo-item">
+            <img src="foto9.png" class="photo-item">
+            <img src="foto10.png" class="photo-item">
+
+            <!-- 3. Satır -->
+            <img src="foto11.png" class="photo-item">
+            <img src="foto12.png" class="photo-item">
+            <img src="foto13.png" class="photo-item">
+            <img src="foto14.png" class="photo-item">
+            <img src="foto15.png" class="photo-item">
+
         </div>
     </div>
+</div>
 
     <div id="win-browser" class="window"><div class="win-header"><span>Browser</span><button onclick="closeWindow('win-browser')">X</button></div><div class="win-content">İnternet bağlantısı şu an yok.</div></div>
 
-    <div id="taskbar">
-        <div id="start-btn"><img src="start-icon.png" width="20"><span>Başlat</span></div>
-        <div id="task-items"></div>
-    </div>
+<div id="taskbar">
+    <div id="start-btn"><img src="start-icon.png" width="20"><span>Başlat</span></div>
+    <div id="task-items"></div>
+    <div class="taskbar-date">14.06.2010</div>
+</div>
 </div>
 
 <script>
