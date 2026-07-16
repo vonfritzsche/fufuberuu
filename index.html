@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <title>FufuDows XP</title>
 <style>
+
+.win-buttons{
+    display:flex;
+    gap:3px;
+}
+
+.win-buttons button{
+    width:22px;
+    height:20px;
+}
+
     *{margin:0;padding:0;box-sizing:border-box;}
     body{overflow:hidden; background:url("nyancat.gif") center/cover no-repeat fixed; font-family:Tahoma, sans-serif;}
 
@@ -18,8 +29,40 @@
     #desktop{display:none; width:100vw; height:100vh; position:relative;}
     .icon-area{position:absolute; top:20px; left:20px; display:flex; flex-direction:column; gap:25px;}
     .game-area{position:absolute; bottom:70px; right:20px; display:flex; gap:15px;}
-    .icon{width:80px; text-align:center; color:white; cursor:pointer; user-select:none; transition: 0.2s;}
-    .icon:hover{transform: scale(1.15);}
+
+.icon{
+    width:80px;
+    text-align:center;
+    color:white;
+    cursor:pointer;
+    user-select:none;
+    transition:0.15s;
+    padding:5px;
+    border:1px solid transparent;
+    border-radius:3px;
+    text-shadow:1px 1px 3px black;
+}
+
+.icon:hover{
+    background:rgba(50,120,255,0.55);
+    border:1px solid #8fc7ff;
+    box-shadow:
+    0 0 8px rgba(0,100,255,0.8),
+    inset 0 0 5px rgba(255,255,255,0.4);
+
+    transform:scale(1.05);
+}
+
+.icon.selected{
+    background:rgba(50,120,255,0.65);
+    border:1px solid #8fc7ff;
+
+    box-shadow:
+    0 0 8px rgba(0,100,255,0.8),
+    inset 0 0 5px rgba(255,255,255,0.5);
+}
+
+    
     .icon img{width:50px; display:block; margin:0 auto; filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.5));}
 
     /* Özel Mesaj */
@@ -36,17 +79,65 @@
     }
 
     /* Pencereler */
-    .window{position:absolute; top:50px; left:100px; width:650px; height:450px; background:#ece9d8; border:2px solid #004e98; display:none; flex-direction:column; z-index:50;}
-    .win-header{background:linear-gradient(#0054e3, #4388f6); color:white; padding:6px 12px; display:flex; justify-content:space-between; align-items:center;}
+.window{
+    position:absolute;
+    top:50px;
+    left:100px;
+
+    box-shadow:
+    6px 6px 18px rgba(0,0,0,0.55);
+
+    width:650px;
+    height:450px;
+    width:650px;
+    height:450px;
+    background:#ece9d8;
+    border:2px solid #004e98;
+
+    display:none;
+    flex-direction:column;
+    z-index:50;
+
+    resize:both;
+    overflow:auto;
+
+    min-width:300px;
+    min-height:200px;
+    max-width:95vw;
+    max-height:90vh;
+
+    opacity:0;
+    transform:scale(0.7);
+transform-origin:top left;
+
+    transition:
+    opacity .18s ease,
+    transform .18s ease;
+}
+
+
+.window.open{
+    opacity:1;
+    transform:scale(1);
+}
+    .win-header{
+    background:linear-gradient(#0054e3,#4388f6);
+    color:white;
+    padding:6px 12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:move;
+}
+
     .win-header button{background:#d4d0c8; border:1px solid #000; cursor:pointer; font-weight:bold; padding:2px 8px;}
     .win-content{padding:20px; color:black; flex-grow:1; background:white; overflow-y:auto; font-size:14px;}
 
     /* Klasör Fotoğraf Stili */
 .photo-grid{
     display:grid;
-    grid-template-columns:repeat(5,100px);
+    grid-template-columns:repeat(auto-fill,100px);
     gap:15px;
-    justify-content:start;
 }
 
 .photo-item{
@@ -56,11 +147,55 @@
     object-fit:cover;
 }
 
+.drive{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin:18px 0;
+}
+
+.drive img{
+    width:48px;
+}
+
+.drive-info{
+    flex:1;
+}
+
+.drive-bar{
+    width:100%;
+    height:18px;
+    border:1px solid #888;
+    background:#ddd;
+}
+
+.drive-fill{
+    height:100%;
+    background:linear-gradient(#4fa3ff,#0055cc);
+}
+
     /* Taskbar */
     #taskbar{position:absolute; bottom:0; width:100%; height:40px; background:linear-gradient(#245ed1, #3f8cf3 50%, #245ed1 50%, #1c469e 100%); display:flex; align-items:center; padding:0 15px; color:white; border-top:2px solid #1c469e; z-index:100;}
     #start-btn{background:linear-gradient(#9b59b6, #8e44ad 50%, #9b59b6 100%); padding:3px 12px; border-radius:5px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:5px;}
     #task-items{display:flex; gap:5px; margin-left:10px;}
-    .task-item{background:#3a6ea5; padding:4px 12px; border-radius:3px; font-size:12px; cursor:pointer;}
+    .task-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    background:#3a6ea5;
+    padding:4px 10px;
+    border-radius:3px;
+
+    font-size:12px;
+    cursor:pointer;
+}
+
+.task-item img{
+    width:16px;
+    height:16px;
+}
+
 .taskbar-date{
     margin-left:auto;
     padding-right:10px;
@@ -72,13 +207,425 @@
     align-items:center;
     height:100%;
 }
+
+/* ================= START MENU ================= */
+
+#start-menu{
+    position:absolute;
+    bottom:40px;
+    left:0;
+    width:430px;
+    height:500px;
+
+    display:none;
+
+    background:#fff;
+    border:2px solid #0a246a;
+    border-radius:8px 8px 0 0;
+    overflow:hidden;
+    z-index:999;
+
+    opacity:0;
+    transform:translateY(40px);
+
+    transition:
+    opacity .20s ease,
+    transform .20s ease;
+}
+
+#start-menu.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.start-top{
+    height:60px;
+    background:linear-gradient(#9b59b6,#8e44ad 50%,#9b59b6 100%);
+    display:flex;
+    align-items:center;
+    color:#fff;
+    font-size:22px;
+    font-weight:bold;
+    padding:10px;
+}
+
+.start-top img{
+    width:42px;
+    height:42px;
+    margin-right:10px;
+    border-radius:5px;
+    border:2px solid white;
+}
+
+.start-left{
+    position:absolute;
+    left:0;
+    top:60px;
+    bottom:0;
+    width:240px;
+    background:#fff;
+}
+
+.start-right{
+    position:absolute;
+    right:0;
+    top:60px;
+    bottom:0;
+    width:190px;
+    background:#dbeaff;
+    border-left:1px solid #9bb8df;
+}
+
+.start-item,
+.right-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 15px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.start-item img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+}
+
+/* BURAYA EKLE */
+.start-item{
+    transition:0.15s;
+}
+
+.start-item:active{
+    transform:translateY(1px);
+}
+
+.start-item:hover,
+.right-item:hover{
+    background:linear-gradient(#3875d7,#1d4fa8);
+    color:white;
+}
+
+#welcome{
+    position:fixed;
+    inset:0;
+    background:#245edb;
+    display:none;
+    z-index:998;
+    align-items:center;
+    justify-content:center;
+}
+
+.welcome-text{
+    color:white;
+    font-size:55px;
+    font-weight:bold;
+    font-family:Tahoma;
+    text-shadow:2px 2px 5px #000;
+}
+
+.welcome-user{
+    margin-top:25px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.welcome-user img{
+    width:90px;
+    height:90px;
+    border-radius:8px;
+    border:3px solid white;
+    box-shadow:0 0 10px black;
+}
+
+.welcome-name{
+    color:white;
+    font-size:28px;
+    font-family:Tahoma;
+    text-shadow:2px 2px 4px #000;
+}
+
+.welcome-sub{
+    margin-top:20px;
+    color:white;
+    font-size:16px;
+    font-family:Tahoma;
+    opacity:0.9;
+}
+
+/* XP SAĞ TIK MENÜ */
+
+#context-menu{
+    position:absolute;
+    width:220px;
+    background:#fff;
+    border:2px solid #0a246a;
+    box-shadow:3px 3px 8px rgba(0,0,0,.5);
+    display:none;
+    z-index:9999;
+    font-family:Tahoma;
+    font-size:13px;
+}
+
+
+.context-item{
+    padding:6px 12px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+}
+
+
+.context-item:hover{
+    background:linear-gradient(#3875d7,#1d4fa8);
+    color:white;
+}
+
+
+.context-separator{
+    height:1px;
+    background:#aaa;
+    margin:4px 0;
+}
+
+.player-buttons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+}
+
+.player-buttons button{
+    width:45px;
+    height:32px;
+    font-size:22px;
+    font-weight:bold;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:0;
+    cursor:pointer;
+}
+
+/* ================= FUFU PLAYER TASARIM ================= */
+
+.winf-player{
+    background:#ece9d8;
+    border:2px solid #808080;
+    padding:20px;
+    width:100%;
+    height:100%;
+    font-family:Tahoma;
+}
+
+
+/* Albüm + bilgiler */
+
+.player-top{
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+    background:linear-gradient(#fff,#ddd);
+    border:1px solid #999;
+
+    padding:15px;
+}
+
+
+#album-cover{
+    width:130px;
+    height:130px;
+    object-fit:cover;
+
+    border:3px solid #333;
+    box-shadow:
+    3px 3px 8px black;
+}
+
+
+.song-info h2{
+    font-size:22px;
+    color:#003399;
+    margin-bottom:10px;
+}
+
+
+#song-artist{
+    color:#444;
+}
+
+
+/* Şarkı ilerleme */
+
+#music-progress{
+
+    width:100%;
+    margin-top:25px;
+
+    appearance:none;
+    height:12px;
+
+    background:#cfcfcf;
+    border:1px solid #555;
+
+    border-radius:0;
+
+}
+
+
+#music-progress::-webkit-slider-thumb{
+
+    appearance:none;
+
+    width:18px;
+    height:18px;
+
+    background:
+    linear-gradient(#fff,#999);
+
+    border:1px solid black;
+
+    border-radius:2px;
+
+    cursor:pointer;
+}
+
+
+
+/* Butonlar */
+
+.player-buttons{
+
+    margin-top:20px;
+
+    display:flex;
+    justify-content:center;
+    gap:8px;
+
+}
+
+
+.player-buttons button{
+
+    width:45px;
+    height:28px;
+
+    background:
+    linear-gradient(#fff,#ccc);
+
+    border:2px solid #555;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+.player-buttons button:active{
+
+    transform:translateY(2px);
+
+}
+
+
+
+/* Ses */
+
+.volume-area{
+
+    margin-top:25px;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+}
+
+
+#volume{
+
+    width:200px;
+
+    appearance:none;
+
+    height:10px;
+
+    background:#ccc;
+
+}
+
+
+#volume::-webkit-slider-thumb{
+
+    appearance:none;
+
+    width:16px;
+    height:16px;
+
+    background:#8e44ad;
+
+    border:1px solid black;
+
+}
+
+
+
+/* süre */
+
+.time{
+
+    margin-top:15px;
+
+    display:flex;
+    justify-content:space-between;
+
+    font-size:13px;
+
+    color:#222;
+
+}
+
 </style>
 </head>
 <body>
 
+<audio id="xp-start">
+    <source src="xp-start.mp3" type="audio/mpeg">
+</audio>
+
 <audio id="bg-music" loop><source src="NyanCat_theme.mp3" type="audio/mpeg"></audio>
 
 <div id="boot"><img src="xp.png"><div class="loading"><div class="bar"></div></div></div>
+
+<div id="welcome">
+
+    <div class="welcome-text">
+
+        Hoş Geldiniz
+
+        <div class="welcome-user">
+
+            <img src="user.png">
+
+            <div class="welcome-name">
+                Beray Ç.
+            </div>
+
+        </div>
+
+
+        <div class="welcome-sub">
+            Kişisel ayarlarınız yükleniyor...
+        </div>
+
+
+    </div>
+
+</div>
 
 <div id="desktop">
     <div class="msg-fufu">Love you Fufu &lt;3 !!!!!</div>
@@ -89,7 +636,7 @@
         <div class="icon" onclick="openWindow('win-fufu', 'Fufu Klasörü')"><img src="folder.png"><div>Fufu</div></div>
         <div class="icon" onclick="openWindow('win-player', 'Nyan Player')"><img src="player.png"><div>Nyan Player</div></div>
         <div class="icon" onclick="openWindow('win-note', 'Not Defteri')"><img src="note.png"><div>Notlar</div></div>
-        <div class="icon" onclick="openWindow('win-browser', 'Fufu Explorer')"><img src="browser.png"><div>Fufu Explorer</div></div>
+        <div class="icon" onclick="openWindow('win-browser', 'Fufu Gezgini')"><img src="browser.png"><div>Fufu Gezgini</div></div>
     </div>
 
     <div class="game-area">
@@ -103,77 +650,408 @@
         <div class="icon"><img src="fnaf4.png"><div>FNAF4</div></div>
     </div>
 
-    <div id="win-pc" class="window"><div class="win-header"><span>Bilgisayar</span><button onclick="closeWindow('win-pc')">X</button></div>
-        <div class="win-content">
-            <h3>Sistem : </h3><hr><br>
-            <strong></strong>Yigitsoft Fufudows XP<br>
-            <strong></strong>Home x64 Edition<br>
-            <strong></strong>Version 14.06.2010<br>
-            <strong></strong>Service Pack 3<br>
+<div id="win-pc" class="window">
 
-            <h3>Kayıt edildi:  </h3><hr><br>
-            <strong></strong>Beray Ç.<br>
-            <strong></strong>Istanbul Maltepe Turkiye<br>
-            <strong></strong>0001-2010-0001-0606-0001-0014<br>
+    <div class="win-header">
 
-            <h3>Bilgisayar </h3><hr><br>
-            <strong></strong>Intel Core (TM)2 CPU Duo<br>
-            <strong></strong>E4500 @ 2.20 GHz<br>
-            <strong></strong>2.10 GHz ,2.00 GB of RAM<br>
-            <strong></strong>Fiziksel Kart Bilgileri<br>
+        <span>Bilgisayar</span>
 
+        <div class="win-buttons">
+            <button onclick="minWindow('win-pc')">_</button>
+            <button onclick="maxWindow('win-pc')">□</button>
+            <button onclick="closeWindow('win-pc')">X</button>
+        </div>
+
+    </div>
+
+<div class="win-content">
+
+<h2>Bilgisayar</h2>
+<hr><br>
+
+<div class="drive">
+
+    <img src="drive.png">
+
+    <div class="drive-info">
+        <b>Yerel Disk (C:)</b><br>
+        80 GB
+
+        <div class="drive-bar">
+            <div class="drive-fill" style="width:80%"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="drive">
+
+    <img src="drive1.png">
+
+    <div class="drive-info">
+        <b>Fotoğraflar (D:)</b><br>
+        40 GB
+
+        <div class="drive-bar">
+            <div class="drive-fill" style="width:40%"></div>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="win-player" class="window">
+
+    <div class="win-header">
+        <span>Nyan Player</span>
+
+        <div class="win-buttons">
+            <button onclick="minWindow('win-player')">_</button>
+            <button onclick="maxWindow('win-player')">□</button>
+            <button onclick="closeWindow('win-player')">X</button>
         </div>
     </div>
 
-    <div id="win-player" class="window"><div class="win-header"><span>Nyan Player</span><button onclick="closeWindow('win-player')">X</button></div>
-        <div class="win-content">
-            <p>Şu an Çalan: Nyan Cat Fufu Theme</p><br>
-            <button onclick="document.getElementById('bg-music').play()">Oynat</button>
-            <button onclick="document.getElementById('bg-music').pause()">Duraklat</button>
-            <button onclick="document.getElementById('bg-music').currentTime=0">Başa Sar</button>
+
+    <div class="win-content">
+
+
+        <div class="winf-player">
+
+            <div class="player-top">
+
+                <img id="album-cover" src="muzik1.png">
+
+                <div class="song-info">
+
+                    <h2 id="song-title">
+                    Nyan Cat Theme
+                    </h2>
+
+                    <div id="song-artist">
+                    Sanatçı: Nyan Cat
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <input id="music-progress"
+            type="range"
+            value="0"
+            min="0"
+            max="100">
+
+
+            <div class="player-buttons">
+
+           <button onclick="prevSong()">⏮</button>
+           <button onclick="playMusic()">▶</button>
+           <button onclick="pauseMusic()">⏸</button>
+           <button onclick="restartMusic()">⏹</button>
+           <button onclick="nextSong()">⏭</button>
+
+            </div>
+
+
+            <div class="volume-area">
+
+                Ses:
+
+                <input id="volume"
+                type="range"
+                min="0"
+                max="100"
+                value="100"
+                oninput="changeVolume(this.value)">
+
+            </div>
+
+
+            <div class="time">
+
+                <span id="current-time">00:00</span>
+                <span id="total-time">00:00</span>
+
+            </div>
+
+
         </div>
+
+
     </div>
 
-    <div id="win-note" class="window"><div class="win-header"><span>Not Defteri</span><button onclick="closeWindow('win-note')">X</button></div>
+</div>
+
+
+</div>
+
+</div>
+
+    </div>
+
+<div id="win-note" class="window">
+    <div class="win-header">
+
+        <span>Notlar</span>
+
+        <div class="win-buttons">
+<button onclick="minWindow('win-note')">_</button>
+<button onclick="maxWindow('win-note')">□</button>
+<button onclick="closeWindow('win-note')">X</button>
+        </div>
+
+    </div>
+
         <div class="win-content"><textarea style="width:100%; height:90%; border:none;"></textarea></div>
     </div>
 
-    <div id="win-cop" class="window"><div class="win-header"><span>Çöp Kutusu</span><button onclick="closeWindow('win-cop')">X</button></div><div class="win-content">Çöp kutusu boş.</div></div>
-    <div id="win-fufu" class="window">
+    <div id="win-cop" class="window">
+
+<div class="win-header">
+<span>Çöp Kutusu</span>
+
+<div class="win-buttons">
+<button onclick="minWindow('win-cop')">_</button>
+<button onclick="maxWindow('win-cop')">□</button>
+<button onclick="closeWindow('win-cop')">X</button>
+</div>
+
+</div>
+
+<div class="win-content">
+Çöp kutusu boş.
+</div>
+
+</div>
+
+<div id="win-fufu" class="window">
+
     <div class="win-header">
         <span>Fufu Klasörü</span>
-        <button onclick="closeWindow('win-fufu')">X</button>
+
+        <div class="win-buttons">
+            <button onclick="minWindow('win-fufu')">_</button>
+            <button onclick="maxWindow('win-fufu')">□</button>
+            <button onclick="closeWindow('win-fufu')">X</button>
+        </div>
+
+    </div>
+
+
+<div class="win-content">
+
+    <div class="photo-grid">
+
+        <img src="foto1.png" class="photo-item" onclick="openImage('foto1.png')">
+        <img src="foto2.png" class="photo-item" onclick="openImage('foto2.png')">
+        <img src="foto3.png" class="photo-item" onclick="openImage('foto3.png')">
+        <img src="foto4.png" class="photo-item" onclick="openImage('foto4.png')">
+        <img src="foto5.png" class="photo-item" onclick="openImage('foto5.png')">
+
+        <img src="foto6.png" class="photo-item" onclick="openImage('foto6.png')">
+        <img src="foto7.png" class="photo-item" onclick="openImage('foto7.png')">
+        <img src="foto8.png" class="photo-item" onclick="openImage('foto8.png')">
+        <img src="foto9.png" class="photo-item" onclick="openImage('foto9.png')">
+        <img src="foto10.png" class="photo-item" onclick="openImage('foto10.png')">
+
+        <img src="foto11.png" class="photo-item" onclick="openImage('foto11.png')">
+        <img src="foto12.png" class="photo-item" onclick="openImage('foto12.png')">
+        <img src="foto13.png" class="photo-item" onclick="openImage('foto13.png')">
+        <img src="foto14.png" class="photo-item" onclick="openImage('foto14.png')">
+        <img src="foto15.png" class="photo-item" onclick="openImage('foto15.png')">
+
+    </div>
+
+</div>
+
+</div>
+
+<div id="win-photo" class="window">
+
+    <div class="win-header">
+        <span>Windows Resim Görüntüleyicisi</span>
+
+        <div class="win-buttons">
+            <button onclick="minWindow('win-photo')">_</button>
+            <button onclick="maxWindow('win-photo')">□</button>
+            <button onclick="closeWindow('win-photo')">X</button>
+        </div>
+    </div>
+
+    <div class="win-content" style="text-align:center;">
+        <img id="photo-view"
+             src=""
+             style="max-width:100%;max-height:100%;object-fit:contain;">
+    </div>
+
+</div>
+
+    <div id="win-browser" class="window">
+
+<div class="win-header">
+<span>Browser</span>
+
+<div class="win-buttons">
+<button onclick="minWindow('win-browser')">_</button>
+<button onclick="maxWindow('win-browser')">□</button>
+<button onclick="closeWindow('win-browser')">X</button>
+</div>
+
+</div>
+
+<div class="win-content">
+İnternet bağlantısı şu an yok.
+</div>
+
+</div>
+
+<div id="win-properties" class="window">
+
+    <div class="win-header">
+        <span>Sistem Özellikleri</span>
+
+        <div class="win-buttons">
+            <button onclick="minWindow('win-properties')">_</button>
+            <button onclick="maxWindow('win-properties')">□</button>
+            <button onclick="closeWindow('win-properties')">X</button>
+        </div>
     </div>
 
     <div class="win-content">
-        <div class="photo-grid">
 
-            <!-- 1. Satır -->
-            <img src="foto1.png" class="photo-item">
-            <img src="foto2.png" class="photo-item">
-            <img src="foto3.png" class="photo-item">
-            <img src="foto4.png" class="photo-item">
-            <img src="foto5.png" class="photo-item">
+        <h3>Sistem :</h3><hr><br>
+        Yigitsoft Fufudows XP<br>
+        Home x64 Edition<br>
+        Version 14.06.2010<br>
+        Service Pack 3<br><br>
 
-            <!-- 2. Satır -->
-            <img src="foto6.png" class="photo-item">
-            <img src="foto7.png" class="photo-item">
-            <img src="foto8.png" class="photo-item">
-            <img src="foto9.png" class="photo-item">
-            <img src="foto10.png" class="photo-item">
+        <h3>Kayıt edildi:</h3><hr><br>
+        Beray Ç.<br>
+        Istanbul Maltepe Turkiye<br>
+        0001-2010-0001-0606-0001-0014<br><br>
 
-            <!-- 3. Satır -->
-            <img src="foto11.png" class="photo-item">
-            <img src="foto12.png" class="photo-item">
-            <img src="foto13.png" class="photo-item">
-            <img src="foto14.png" class="photo-item">
-            <img src="foto15.png" class="photo-item">
+        <h3>Bilgisayar</h3><hr><br>
+        Intel Core (TM)2 CPU Duo<br>
+        E4500 @ 2.20 GHz<br>
+        2.10 GHz, 2.00 GB RAM<br>
+    </div>
 
-        </div>
+</div>
+
+<div id="start-menu">
+    <div class="start-top">
+        <img src="user.png">
+        <span>Beray Ç.</span>
+    </div>
+
+<div class="start-left">
+
+    <div class="start-item"
+         onclick="openWindow('win-pc','Bilgisayar');startMenu.style.display='none';">
+        <img src="pc.png">
+        Bilgisayar
+    </div>
+
+    <div class="start-item"
+         onclick="openWindow('win-cop','Çöp Kutusu');startMenu.style.display='none';">
+        <img src="recycle.png">
+        Çöp Kutusu
+    </div>
+
+    <div class="start-item"
+         onclick="openWindow('win-fufu','Fufu');startMenu.style.display='none';">
+        <img src="folder.png">
+        Fufu
+    </div>
+
+    <div class="start-item"
+         onclick="openWindow('win-player','Nyan Player');startMenu.style.display='none';">
+        <img src="player.png">
+        Nyan Player
+    </div>
+
+    <div class="start-item"
+         onclick="openWindow('win-note','Notlar');startMenu.style.display='none';">
+        <img src="note.png">
+        Notlar
+    </div>
+
+    <div class="start-item"
+         onclick="openWindow('win-browser','Fufu Gezgini');startMenu.style.display='none';">
+        <img src="browser.png">
+        Fufu Gezgini
+    </div>
+
+    <div class="start-item">
+        <img src="postal.png">
+        Postal 2
+    </div>
+
+    <div class="start-item">
+        <img src="dangan.png">
+        Danganronpa
+    </div>
+
+    <div class="start-item">
+        <img src="fnaf4.png">
+        FNAF 4
+    </div>
+
+</div>
+
+    <div class="start-right">
+        <div class="right-item">Denetim Masası</div>
+        <div class="right-item">Çalıştır...</div>
+        <div class="right-item">Bilgisayarı Kapat</div>
     </div>
 </div>
 
-    <div id="win-browser" class="window"><div class="win-header"><span>Browser</span><button onclick="closeWindow('win-browser')">X</button></div><div class="win-content">İnternet bağlantısı şu an yok.</div></div>
+<div id="context-menu">
+
+    <div class="context-item">
+        Görünüm
+        <span>▶</span>
+    </div>
+
+    <div class="context-item">
+        Sırala
+        <span>▶</span>
+    </div>
+
+    <div class="context-item">
+        Yenile
+    </div>
+
+    <div class="context-separator"></div>
+
+    <div class="context-item">
+        Yeni
+        <span>▶</span>
+    </div>
+
+    <div class="context-separator"></div>
+
+    <div class="context-item">
+        Ekran çözünürlüğü
+    </div>
+
+<div class="context-item" onclick="openWindow('win-properties','Özellikler')">
+    Özellikler
+</div>
+
+</div>
 
 <div id="taskbar">
     <div id="start-btn"><img src="start-icon.png" width="20"><span>Başlat</span></div>
@@ -183,26 +1061,553 @@
 </div>
 
 <script>
-function openWindow(id, title) {
-    document.getElementById(id).style.display = "flex";
-    if(!document.getElementById('task-' + id)){
-        const task = document.createElement('div');
-        task.id = 'task-' + id; task.className = 'task-item'; task.innerText = title;
-        task.onclick = () => document.getElementById(id).style.display = "flex";
-        document.getElementById('task-items').appendChild(task);
+
+let z = 100;
+
+function openWindow(id, title){
+
+    const win = document.getElementById(id);
+
+    win.style.display="flex";
+
+    setTimeout(()=>{
+        win.classList.add("open");
+    },10);
+
+    win.style.zIndex=++z;
+
+
+    if(!document.getElementById("task-"+id)){
+
+        const task=document.createElement("div");
+
+        task.id="task-"+id;
+        task.className="task-item";
+
+
+        const img=document.createElement("img");
+
+let icons={
+    "win-pc":"pc.png",
+    "win-cop":"recycle.png",
+    "win-fufu":"folder.png",
+    "win-player":"player.png",
+    "win-note":"note.png",
+    "win-browser":"browser.png",
+    "win-properties":"properties.png",
+    "win-photo":"photo.png"
+};
+
+
+        img.src=icons[id] || "folder.png";
+
+
+        const text=document.createElement("span");
+        text.innerText=title;
+
+
+        task.appendChild(img);
+        task.appendChild(text);
+
+
+
+        task.onclick=function(){
+
+            win.style.display="flex";
+
+            setTimeout(()=>{
+                win.classList.add("open");
+            },10);
+
+            win.style.zIndex=++z;
+
+        };
+
+
+        document.getElementById("task-items")
+        .appendChild(task);
+
     }
-}
-function closeWindow(id) {
-    document.getElementById(id).style.display = "none";
-    const task = document.getElementById('task-' + id);
-    if(task) task.remove();
+
 }
 
-setTimeout(() => {
-    document.getElementById("boot").style.display = "none";
-    document.getElementById("desktop").style.display = "block";
-    document.getElementById('bg-music').play().catch(e => console.log("Müzik için etkileşim gerekiyor."));
-}, 4000);
+
+
+function closeWindow(id){
+
+    const win=document.getElementById(id);
+
+    win.classList.remove("open");
+
+
+    setTimeout(()=>{
+        win.style.display="none";
+    },180);
+
+
+    let task=document.getElementById("task-"+id);
+
+    if(task){
+        task.remove();
+    }
+
+}
+
+
+
+
+function minWindow(id){
+
+    const win=document.getElementById(id);
+
+
+    win.classList.remove("open");
+
+
+    setTimeout(()=>{
+        win.style.display="none";
+    },180);
+
+}
+
+
+
+
+
+function maxWindow(id){
+
+    const win=document.getElementById(id);
+
+
+    if(win.dataset.max!="1"){
+
+
+        win.dataset.max="1";
+
+
+        win.dataset.left=win.offsetLeft+"px";
+        win.dataset.top=win.offsetTop+"px";
+        win.dataset.width=win.offsetWidth+"px";
+        win.dataset.height=win.offsetHeight+"px";
+
+
+        win.style.left="0px";
+        win.style.top="0px";
+        win.style.width="100vw";
+        win.style.height="calc(100vh - 40px)";
+
+
+    }
+    else{
+
+
+        win.dataset.max="0";
+
+
+        win.style.left=win.dataset.left;
+        win.style.top=win.dataset.top;
+        win.style.width=win.dataset.width;
+        win.style.height=win.dataset.height;
+
+
+    }
+
+}
+
+
+
+
+
+// BOOT
+
+setTimeout(()=>{
+
+    document.getElementById("boot").style.display="none";
+
+    let welcome = document.getElementById("welcome");
+    welcome.style.display="flex";
+
+    setTimeout(()=>{
+
+        welcome.style.display="none";
+        document.getElementById("desktop").style.display="block";
+
+    },2500);
+
+
+    let xpSound = document.getElementById("xp-start");
+
+    xpSound.volume = 0.6;
+
+    xpSound.play()
+    .catch(()=>{});
+
+
+},4000);
+
+
+	
+
+
+// START MENU
+
+const startBtn=document.getElementById("start-btn");
+
+const startMenu=document.getElementById("start-menu");
+
+
+
+startBtn.onclick=function(e){
+
+
+    e.stopPropagation();
+
+
+
+    if(startMenu.style.display=="block"){
+
+
+        startMenu.classList.remove("show");
+
+
+        setTimeout(()=>{
+            startMenu.style.display="none";
+        },200);
+
+
+    }
+
+    else{
+
+
+        startMenu.style.display="block";
+
+
+        setTimeout(()=>{
+            startMenu.classList.add("show");
+        },10);
+
+
+    }
+
+
+};
+
+
+
+
+
+startMenu.onclick=function(e){
+
+    e.stopPropagation();
+
+};
+
+
+
+
+
+document.onclick=function(){
+
+
+    if(startMenu.style.display=="block"){
+
+
+        startMenu.classList.remove("show");
+
+
+        setTimeout(()=>{
+
+            startMenu.style.display="none";
+
+        },200);
+
+
+    }
+
+};
+
+
+
+
+
+
+
+// PENCERE SÜRÜKLEME
+
+let activeWindow = null;
+let offsetX = 0;
+let offsetY = 0;
+
+document.querySelectorAll(".window").forEach(win=>{
+
+    const header = win.querySelector(".win-header");
+
+    header.addEventListener("mousedown",function(e){
+
+        activeWindow = win;
+
+        offsetX = e.clientX - win.offsetLeft;
+        offsetY = e.clientY - win.offsetTop;
+
+        win.style.zIndex = ++z;
+
+    });
+
+});
+
+document.addEventListener("mousemove",function(e){
+
+    if(!activeWindow) return;
+
+    activeWindow.style.left = (e.clientX-offsetX)+"px";
+    activeWindow.style.top = (e.clientY-offsetY)+"px";
+
+});
+
+document.addEventListener("mouseup",function(){
+
+    activeWindow = null;
+
+});
+
+
+document.querySelectorAll(".icon").forEach(icon=>{
+
+
+    // TEK TIK SEÇME
+    icon.addEventListener("click",function(e){
+
+        e.stopPropagation();
+
+        document.querySelectorAll(".icon")
+        .forEach(i=>i.classList.remove("selected"));
+
+        icon.classList.add("selected");
+
+    });
+
+
+
+    // ÇİFT TIK AÇMA
+    let timer = null;
+
+    icon.addEventListener("dblclick",function(e){
+
+        // mevcut onclick zaten çalışıyor
+        // burası oyun ikonları için lazım olacak
+
+    });
+
+
+});
+
+
+// Boş yere basınca seçim kaldır
+document.addEventListener("click",function(e){
+
+    if(!e.target.closest(".icon")){
+
+        document.querySelectorAll(".icon")
+        .forEach(i=>i.classList.remove("selected"));
+
+    }
+
+});
+
+// XP SAĞ TIK MENÜ
+
+const contextMenu=document.getElementById("context-menu");
+
+
+document.getElementById("desktop")
+.addEventListener("contextmenu",function(e){
+
+    e.preventDefault();
+
+    contextMenu.style.display="block";
+
+    contextMenu.style.left=e.clientX+"px";
+    contextMenu.style.top=e.clientY+"px";
+
+});
+
+
+
+document.addEventListener("click",function(){
+
+    contextMenu.style.display="none";
+
+});
+
+
+contextMenu.addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+});
+
+function openPhoto(src){
+
+    document.getElementById("photo-view").src = src;
+
+    openWindow("win-photo","Resim");
+}
+
+function openImage(src){
+
+    document.getElementById("photo-view").src = src;
+
+    openWindow("win-photo","Resim");
+
+}
+
+const music = document.getElementById("bg-music");
+
+function playMusic(){
+    music.play();
+}
+
+function pauseMusic(){
+    music.pause();
+}
+
+function restartMusic(){
+    music.pause();
+    music.currentTime = 0;
+}
+
+const songs=[
+{
+    name:"Nyan Cat Theme",
+    artist:"Nyan Cat",
+    file:"NyanCat_theme.mp3",
+    cover:"muzik1.png"
+},
+{
+    name:"ATIM ARAP",
+    artist:"Ankaralı İbocan",
+    file:"sesdeneme123.mp3",
+    cover:"muzik2.png"
+},
+{
+    name:"Ending Credits",
+    artist:"Opeth",
+    file:"opeth.mp3",
+    cover:"muzik3.png"
+}
+];
+
+let currentSong=0;
+
+function loadSong(i){
+
+    currentSong=i;
+
+    music.src=songs[i].file;
+
+    document.getElementById("song-title").innerText=songs[i].name;
+    document.getElementById("song-artist").innerText="Sanatçı: "+songs[i].artist;
+    document.getElementById("album-cover").src=songs[i].cover;
+
+
+    music.onloadeddata = function(){
+
+        music.play().catch(error=>{
+            console.log("Oynatma hatası:", error);
+        });
+
+    };
+
+    music.load();
+
+}
+
+music.addEventListener("ended", function(){
+
+    nextSong();
+
+});
+
+function changeSong(i){
+    loadSong(i);
+}
+
+function nextSong(){
+
+    currentSong++;
+
+    if(currentSong>=songs.length)
+        currentSong=0;
+
+    loadSong(currentSong);
+
+}
+
+function prevSong(){
+
+    currentSong--;
+
+    if(currentSong<0)
+        currentSong=songs.length-1;
+
+    loadSong(currentSong);
+
+}
+
+function changeVolume(v){
+
+    music.volume=v/100;
+
+}
+
+music.addEventListener("loadedmetadata",function(){
+
+    document.getElementById("total-time").innerText=formatTime(music.duration);
+
+});
+
+music.addEventListener("timeupdate",function(){
+
+    let percent=(music.currentTime/music.duration)*100||0;
+
+    document.getElementById("music-progress").value=percent;
+
+    progress.style.background=
+    `linear-gradient(to right,#2b73ff ${percent}%,#d8d8d8 ${percent}%)`;
+
+    document.getElementById("current-time").innerText=
+    formatTime(music.currentTime);
+
+});
+
+function formatTime(sec){
+
+    let m=Math.floor(sec/60);
+    let s=Math.floor(sec%60);
+
+    if(s<10) s="0"+s;
+
+    return m+":"+s;
+
+}
+
+
+// müzik çubuğu
+const progress=document.getElementById("music-progress");
+
+
+progress.addEventListener("input",function(){
+
+    if(music.duration){
+
+        music.currentTime =
+        (progress.value/100)*music.duration;
+
+    }
+
+});
+
 </script>
 </body>
 </html>
