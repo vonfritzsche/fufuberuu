@@ -18,8 +18,128 @@
     *{margin:0;padding:0;box-sizing:border-box;}
     body{overflow:hidden; background:url("nyancat.gif") center/cover no-repeat fixed; font-family:Tahoma, sans-serif;}
 
+/* ================= BIOS SCREEN ================= */
+
+#bios{
+    position:fixed;
+    inset:0;
+
+    background:
+        #000 url("motherboard.png")
+        center center / cover
+        no-repeat;
+
+    overflow:hidden;
+    z-index:1000;
+    font-family:Arial,sans-serif;
+    color:white;
+}
+
+#bios::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.03) 0px,
+        rgba(255,255,255,.03) 1px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events:none;
+}
+
+.bios-asus-logo{
+    position:absolute;
+    top:0;
+    left:0;
+
+    width:320px;
+
+    margin:0;
+    padding:0;
+
+    display:block;
+    z-index:5;
+}
+
+.bios-intel{
+    position:absolute;
+    left:40px;
+    bottom:95px;
+    width:130px;
+}
+
+.bios-model{
+    position:absolute;
+    left:665px;
+    bottom:115px;
+
+    font-family:Arial,sans-serif;
+    font-size:64px;
+    font-weight:700;
+    letter-spacing:-2px;
+
+    color:#f2f2f2;
+    text-shadow:2px 2px 4px #000;
+}		
+
+.bios-name{
+    position:absolute;
+    right:75px;
+    bottom:105px;
+    font-size:60px;
+    font-weight:bold;
+    color:#d8d8d8;
+    text-shadow:2px 2px 5px #000;
+}
+
+.bios-footer{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:20px;
+
+    display:flex;
+    justify-content:center;
+    gap:80px;
+
+    font-size:22px;
+    color:#bdbdbd;
+}
+
+#bios-post{
+    position:absolute;
+    inset:0;
+    background:black;
+    padding:25px;
+    font-family:"Courier New", monospace;
+    font-size:18px;
+    color:#d7d7d7;
+    line-height:1.4;
+    white-space:pre-wrap;
+    display:none;
+    z-index:999;
+}
+
+#bios-lines div{
+    margin:2px 0;
+}
+
     /* Boot Ekranı */
-    #boot{position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:999;}
+    #boot{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:999;
+}
+
     #boot img{width:420px; max-width:90%;}
     .loading{width:240px; height:18px; border:2px solid #777; border-radius:4px; margin-top:30px; overflow:hidden;}
     .bar{width:70px; height:100%; background:linear-gradient(#d6a0ff,#8a2be2,#d6a0ff); animation:xp .8s linear infinite;}
@@ -27,7 +147,17 @@
 
     /* Masaüstü */
     #desktop{display:none; width:100vw; height:100vh; position:relative;}
-    .icon-area{position:absolute; top:20px; left:20px; display:flex; flex-direction:column; gap:25px;}
+    .icon-area{
+position:absolute;
+top:20px;
+left:20px;
+display:flex;
+flex-direction:row;
+flex-wrap:wrap;
+align-content:flex-start;
+width:500px;
+gap:25px;
+}
     .game-area{position:absolute; bottom:70px; right:20px; display:flex; gap:15px;}
 
 .icon{
@@ -41,6 +171,7 @@
     border:1px solid transparent;
     border-radius:3px;
     text-shadow:1px 1px 3px black;
+    position:relative;
 }
 
 .icon:hover{
@@ -81,38 +212,35 @@
     /* Pencereler */
 .window{
     position:absolute;
+
     top:50px;
     left:100px;
 
-    box-shadow:
-    6px 6px 18px rgba(0,0,0,0.55);
+    width:650px;
+    height:450px;
 
-    width:650px;
-    height:450px;
-    width:650px;
-    height:450px;
     background:#ece9d8;
     border:2px solid #004e98;
 
     display:none;
     flex-direction:column;
+
     z-index:50;
 
     resize:both;
-    overflow:auto;
+    overflow:hidden;
 
     min-width:300px;
     min-height:200px;
-    max-width:95vw;
-    max-height:90vh;
+
+    max-width:100%;
+    max-height:calc(100vh - 40px);
 
     opacity:0;
-    transform:scale(0.7);
-transform-origin:top left;
+    transform:scale(.9);
+    transform-origin:center;
 
-    transition:
-    opacity .18s ease,
-    transform .18s ease;
+    transition: opacity .18s, transform .18s;
 }
 
 
@@ -130,8 +258,36 @@ transform-origin:top left;
     cursor:move;
 }
 
-    .win-header button{background:#d4d0c8; border:1px solid #000; cursor:pointer; font-weight:bold; padding:2px 8px;}
-    .win-content{padding:20px; color:black; flex-grow:1; background:white; overflow-y:auto; font-size:14px;}
+    .win-buttons{
+    display:flex;
+    gap:2px;
+}
+
+.win-buttons button{
+    width:22px;
+    height:20px;
+    padding:0;
+    font-weight:bold;
+    font-size:12px;
+    cursor:pointer;
+
+    background:linear-gradient(#fff,#d0d0d0);
+    border:1px solid #555;
+}
+
+.win-buttons button:active{
+    transform:translateY(1px);
+}
+
+    .win-content{
+    padding:20px;
+    color:black;
+    flex:1;
+    min-height:0;
+    background:white;
+    overflow:auto;
+    font-size:14px;
+}
 
     /* Klasör Fotoğraf Stili */
 .photo-grid{
@@ -175,7 +331,22 @@ transform-origin:top left;
 }
 
     /* Taskbar */
-    #taskbar{position:absolute; bottom:0; width:100%; height:40px; background:linear-gradient(#245ed1, #3f8cf3 50%, #245ed1 50%, #1c469e 100%); display:flex; align-items:center; padding:0 15px; color:white; border-top:2px solid #1c469e; z-index:100;}
+    #taskbar{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:40px;
+
+    display:none;
+
+    background:linear-gradient(#245ed1,#3f8cf3 50%,#245ed1 50%,#1c469e 100%);
+    align-items:center;
+    padding:0 15px;
+    color:white;
+    border-top:2px solid #1c469e;
+    z-index:100;
+}
+
     #start-btn{background:linear-gradient(#9b59b6, #8e44ad 50%, #9b59b6 100%); padding:3px 12px; border-radius:5px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:5px;}
     #task-items{display:flex; gap:5px; margin-left:10px;}
     .task-item{
@@ -371,14 +542,18 @@ transform-origin:top left;
 
 
 .context-item{
+    position:relative;
     padding:6px 12px;
     cursor:pointer;
-    display:flex;
-    justify-content:space-between;
 }
 
 
-.context-item:hover{
+.context-item > span{
+    float:right;
+}
+
+
+.context-item:not(:has(.submenu)):hover{
     background:linear-gradient(#3875d7,#1d4fa8);
     color:white;
 }
@@ -418,6 +593,8 @@ transform-origin:top left;
     width:100%;
     height:100%;
     font-family:Tahoma;
+    overflow:auto;
+
 }
 
 
@@ -589,6 +766,322 @@ transform-origin:top left;
 
 }
 
+/* ================= FUFU EXPLORER ================= */
+
+.win-browser{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    height:100%;
+    background:#f5f6f7;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+/* Menü */
+
+.win-menubar{
+    height:26px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:0 10px;
+    background:#f7f7f7;
+    border-bottom:1px solid #d2d2d2;
+    font-size:13px;
+}
+
+.win-menubar span{
+    cursor:pointer;
+}
+
+.win-menubar span:hover{
+    color:#0066cc;
+}
+
+/* Toolbar */
+
+.win-toolbar{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px;
+    background:linear-gradient(#ffffff,#ececec);
+    border-bottom:1px solid #c8c8c8;
+}
+
+.win-toolbar button{
+
+    width:34px;
+    height:30px;
+
+    border:1px solid #b8b8b8;
+    border-radius:4px;
+
+    background:white;
+
+    cursor:pointer;
+
+    font-size:15px;
+}
+
+.win-toolbar button:hover{
+    background:#dceeff;
+}
+
+/* Adres */
+
+#win-url{
+
+    flex:1;
+    height:30px;
+
+    border:1px solid #999;
+    border-radius:4px;
+
+    padding:0 10px;
+
+    font-size:14px;
+
+}
+
+/* Favoriler */
+
+.win-bookmarks{
+
+    display:flex;
+
+    gap:6px;
+
+    padding:6px;
+
+    background:#f8f8f8;
+
+    border-bottom:1px solid #d5d5d5;
+
+}
+
+.win-bookmark{
+
+    padding:5px 12px;
+
+    border-radius:4px;
+
+    background:white;
+
+    border:1px solid #cfcfcf;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+}
+
+.win-bookmark:hover{
+
+    background:#dceeff;
+
+}
+
+/* iframe */
+
+.win-view{
+
+    flex:1;
+
+    background:white;
+
+}
+
+.win-view iframe{
+
+    width:100%;
+    height:100%;
+    border:none;
+
+}
+
+#paintCanvas{
+    max-width:100%;
+    height:auto;
+}
+
+.trash-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px;
+    cursor:pointer;
+}
+
+.trash-item:hover{
+    background:#3875d7;
+    color:white;
+}
+
+.context-item{
+    position:relative;
+}
+
+
+.submenu{
+    position:absolute;
+
+    left:218px;
+    top:-2px;
+
+    width:170px;
+
+    background:#fff;
+
+    border:1px solid #7f7f7f;
+
+    box-shadow:
+    2px 2px 5px rgba(0,0,0,.4);
+
+    display:none;
+
+    z-index:10000;
+
+    color:black;
+}
+
+.context-item.open > .submenu{
+    display:block;
+}
+
+
+
+
+.submenu div{
+    height:26px;
+
+    line-height:26px;
+
+    padding-left:20px;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+}
+
+
+.submenu div:hover{
+    background:#316ac5;
+    color:white;
+}
+
+#auto-check{
+    display:inline-block;
+    width:18px;
+}
+
+.wall-item{
+
+display:inline-block;
+
+margin:10px;
+
+cursor:pointer;
+
+border:2px solid #999;
+
+padding:5px;
+
+background:white;
+
+}
+
+
+.wall-item:hover{
+
+border-color:#316ac5;
+
+background:#dbeaff;
+
+}
+
+
+.wall-item img{
+
+width:180px;
+height:100px;
+
+object-fit:cover;
+
+}
+
+.explorer-body{
+    display:flex;
+    height:100%;
+    min-height:0;
+
+}
+
+.explorer-sidebar{
+    width:220px;
+    background:#f2f2f2;
+    border-right:1px solid #bdbdbd;
+}
+
+.side-title{
+    background:#d9e8fb;
+    padding:10px;
+    font-weight:bold;
+    border-bottom:1px solid #bdbdbd;
+}
+
+.site-link{
+    padding:10px;
+    cursor:pointer;
+}
+
+.site-link:hover{
+    background:#316ac5;
+    color:white;
+}
+
+.explorer-page{
+    flex:1;
+    min-height:0;
+}
+
+.explorer-page iframe{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+#minecraft-window{
+    position:fixed;
+    top:50px;
+    left:100px;
+
+    width:900px;
+    height:600px;
+
+    background:#ece9d8;
+    border:2px solid #004e98;
+
+    display:none;
+    flex-direction:column;
+
+    z-index:999999;
+}
+
+
+#minecraft-frame{
+    width:100%;
+    height:calc(100% - 32px);
+    border:none;
+}
+
+#minecraft-window.maximized{
+    top:0;
+    left:0;
+    width:100%;
+    height:calc(100% - 40px); /* taskbar yüksekliği */
+}
+
 </style>
 </head>
 <body>
@@ -598,6 +1091,25 @@ transform-origin:top left;
 </audio>
 
 <audio id="bg-music" loop><source src="NyanCat_theme.mp3" type="audio/mpeg"></audio>
+
+<div id="bios">
+
+    <img src="asus.png" class="bios-asus-logo">
+
+    <div id="bios-post">
+        <div id="bios-lines"></div>
+    </div>
+
+    <img src="motherboard.png" class="bios-board">
+
+    <img src="intel.png" class="bios-intel">
+<div class="bios-model">P5W DH DELUXE</div>
+
+<div class="bios-footer">
+    Press TAB to display BIOS POST Message&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press DEL to run Setup
+</div>
+
+</div>
 
 <div id="boot"><img src="xp.png"><div class="loading"><div class="bar"></div></div></div>
 
@@ -634,21 +1146,62 @@ transform-origin:top left;
         <div class="icon" onclick="openWindow('win-pc', 'Bilgisayar')"><img src="pc.png"><div>Bilgisayar</div></div>
         <div class="icon" onclick="openWindow('win-cop', 'Çöp Kutusu')"><img src="recycle.png"><div>Çöp Kutusu</div></div>
         <div class="icon" onclick="openWindow('win-fufu', 'Fufu Klasörü')"><img src="folder.png"><div>Fufu</div></div>
-        <div class="icon" onclick="openWindow('win-player', 'Nyan Player')"><img src="player.png"><div>Nyan Player</div></div>
+        <div class="icon" onclick="openWindow('win-player', 'Fufu Player')"><img src="player.png"><div>Fufu Player</div></div>
         <div class="icon" onclick="openWindow('win-note', 'Not Defteri')"><img src="note.png"><div>Notlar</div></div>
         <div class="icon" onclick="openWindow('win-browser', 'Fufu Gezgini')"><img src="browser.png"><div>Fufu Gezgini</div></div>
+        <div class="icon" onclick="openWindow('win-paint', 'Fufu Paint')"><img src="paint.png"><div>Fufu Paint</div></div>
     </div>
 
     <div class="game-area">
         <div class="icon"><img src="sh2.png"><div>Silent Hill 2</div></div>
         <div class="icon"><img src="manhunt.png"><div>Manhunt</div></div>
         <div class="icon"><img src="postal.png"><div>Postal 2</div></div>
-        <div class="icon"><img src="minecraft.png"><div>Minecraft 1.8.9</div></div>
+<div class="icon" onclick="openMinecraft()">
+    <img src="minecraft.png">
+    <div>Minecraft 1.8.2</div>
+</div>
         <div class="icon"><img src="dangan.png"><div>Danganronpa</div></div>
         <div class="icon"><img src="re4.png"><div>Resident Evil 4</div></div>
         <div class="icon"><img src="sally.png"><div>Sally Face</div></div>
         <div class="icon"><img src="fnaf4.png"><div>FNAF4</div></div>
     </div>
+
+<div id="win-paint" class="window">
+
+    <div class="win-header">
+        <span>Fufu Paint</span>
+
+        <div class="win-buttons">
+            <button onclick="minWindow('win-paint')">_</button>
+            <button onclick="maxWindow('win-paint')">□</button>
+            <button onclick="closeWindow('win-paint')">X</button>
+        </div>
+    </div>
+
+    <div class="win-content" style="padding:0;background:#cfcfcf;">
+
+        <div style="padding:8px;background:#ece9d8;border-bottom:1px solid #888;display:flex;gap:10px;align-items:center;">
+
+            <button onclick="clearCanvas()">Yeni</button>
+
+            <input type="color" id="paintColor" value="#000000">
+
+            <label>
+                Kalınlık
+                <input type="range" id="paintSize" min="1" max="30" value="4">
+            </label>
+
+        </div>
+
+        <canvas id="paintCanvas"
+        width="900"
+        height="600"
+        style="background:white;display:block;cursor:crosshair;">
+        </canvas>
+
+    </div>
+
+</div>
 
 <div id="win-pc" class="window">
 
@@ -713,7 +1266,7 @@ transform-origin:top left;
 <div id="win-player" class="window">
 
     <div class="win-header">
-        <span>Nyan Player</span>
+        <span>Fufu Player</span>
 
         <div class="win-buttons">
             <button onclick="minWindow('win-player')">_</button>
@@ -831,7 +1384,27 @@ transform-origin:top left;
 </div>
 
 <div class="win-content">
-Çöp kutusu boş.
+
+<div class="trash-item">
+<img src="note.png" width="32">
+Eski Notlar.txt
+</div>
+
+<div class="trash-item">
+<img src="folder.png" width="32">
+Eski Proje Klasörü
+</div>
+
+<div class="trash-item">
+<img src="photo.png" width="32">
+foto_eski.png
+</div>
+
+<div class="trash-item">
+<img src="music.png" width="32">
+şarkı.mp3
+</div>
+
 </div>
 
 </div>
@@ -898,10 +1471,10 @@ transform-origin:top left;
 
 </div>
 
-    <div id="win-browser" class="window">
+<div id="win-browser" class="window">
 
 <div class="win-header">
-<span>Browser</span>
+<span>Fufu Gezgini</span>
 
 <div class="win-buttons">
 <button onclick="minWindow('win-browser')">_</button>
@@ -911,9 +1484,154 @@ transform-origin:top left;
 
 </div>
 
-<div class="win-content">
-İnternet bağlantısı şu an yok.
+
+<div class="win-browser">
+
+    <!-- Menü -->
+    <div class="win-menubar">
+        <span>Dosya</span>
+        <span>Düzen</span>
+        <span>Görünüm</span>
+        <span>Sık Kullanılanlar</span>
+        <span>Yardım</span>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="win-toolbar">
+
+        <button onclick="history.back()">←</button>
+        <button onclick="history.forward()">→</button>
+        <button onclick="history.go(-1)">↑</button>
+        <button onclick="reloadIE()">⟳</button>
+        <button onclick="homeIE()">⌂</button>
+
+    </div>
+
+    <!-- Adres -->
+    <div class="win-toolbar">
+
+        <span>Adres ►</span>
+
+        <input
+            id="win-url"
+            value="https://www.bing.com">
+
+        <button onclick="goIE()">Git</button>
+
+    </div>
+
+    <!-- İçerik -->
+    <div class="explorer-body">
+
+        <div class="explorer-sidebar">
+
+            <div class="side-title">
+                Favoriler
+            </div>
+
+            <div class="site-link"
+            onclick="openSite('https://poki.com/')">
+            Poki
+            </div>
+
+            <div class="site-link"
+            onclick="openSite('https://www.worldtimebuddy.com/')">
+            World Time Buddy
+            </div>
+
+            <div class="site-link"
+            onclick="openSite('https://wikipedia.org/')">
+            Wikipedia
+            </div>
+
+            <div class="site-link"
+            onclick="openSite('https://runningwithscissors.com/')">
+            RWS
+            </div>
+
+            <div class="site-link"
+            onclick="openSite('https://vonfritzsche.github.io/https-imlosingmymental.github.io/')">
+            yigitforum
+            </div>
+
+            <div class="site-link"
+            onclick="openSite('https://vonfritzsche.github.io/fufuberuu/')">
+            fufudowsxp
+            </div>
+
+        </div>
+
+        <div class="explorer-page">
+            <iframe id="win-frame"></iframe>
+        </div>
+
+    </div>
+
+    <!-- Durum Çubuğu -->
+    <div style="
+    height:22px;
+    background:#efefef;
+    border-top:1px solid #bdbdbd;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 8px;
+    font-size:12px;">
+
+        <span>Hazır</span>
+        <span>🔒</span>
+
+    </div>
+
 </div>
+
+
+
+<div id="minecraft-window">
+
+    <div class="win-header">
+        <span>Minecraft 1.8.2</span>
+
+        <div class="win-buttons">
+            <button onclick="closeMinecraft()">X</button>
+        </div>
+    </div>
+
+    <iframe id="minecraft-frame"></iframe>
+
+</div>
+
+
+</div>
+
+</div>
+
+<div id="win-wallpaper" class="window">
+
+<div class="win-header">
+
+<span>Görüntü Özellikleri</span>
+
+<div class="win-buttons">
+<button onclick="closeWindow('win-wallpaper')">X</button>
+</div>
+
+</div>
+
+
+<div class="win-content">
+
+
+<h3>Masaüstü Arka Planı</h3>
+
+<hr><br>
+
+
+<div id="wall-list"></div>
+
+
+</div>
+
 
 </div>
 
@@ -959,50 +1677,71 @@ transform-origin:top left;
 <div class="start-left">
 
     <div class="start-item"
-         onclick="openWindow('win-pc','Bilgisayar');startMenu.style.display='none';">
+    onclick="
+    openWindow('win-pc','Bilgisayar');
+    startMenu.classList.remove('show');
+    setTimeout(()=>{
+        startMenu.style.display='none';
+    },200);
+    ">
         <img src="pc.png">
         Bilgisayar
     </div>
 
+
     <div class="start-item"
-         onclick="openWindow('win-cop','Çöp Kutusu');startMenu.style.display='none';">
+    onclick="openWindow('win-cop','Çöp Kutusu');startMenu.style.display='none';">
         <img src="recycle.png">
         Çöp Kutusu
     </div>
 
+
     <div class="start-item"
-         onclick="openWindow('win-fufu','Fufu');startMenu.style.display='none';">
+    onclick="openWindow('win-fufu','Fufu');startMenu.style.display='none';">
         <img src="folder.png">
         Fufu
     </div>
 
-    <div class="start-item"
-         onclick="openWindow('win-player','Nyan Player');startMenu.style.display='none';">
-        <img src="player.png">
-        Nyan Player
-    </div>
 
     <div class="start-item"
-         onclick="openWindow('win-note','Notlar');startMenu.style.display='none';">
+    onclick="openWindow('win-player','Fufu Player');startMenu.style.display='none';">
+        <img src="player.png">
+        Fufu Player
+    </div>
+
+
+    <div class="start-item"
+    onclick="openWindow('win-note','Notlar');startMenu.style.display='none';">
         <img src="note.png">
         Notlar
     </div>
 
+
     <div class="start-item"
-         onclick="openWindow('win-browser','Fufu Gezgini');startMenu.style.display='none';">
+    onclick="openWindow('win-browser','Fufu Gezgini');startMenu.style.display='none';">
         <img src="browser.png">
         Fufu Gezgini
     </div>
+
+
+    <div class="start-item"
+    onclick="openWindow('win-paint','Fufu Paint');startMenu.style.display='none';">
+        <img src="paint.png">
+        Fufu Paint
+    </div>
+
 
     <div class="start-item">
         <img src="postal.png">
         Postal 2
     </div>
 
+
     <div class="start-item">
         <img src="dangan.png">
         Danganronpa
     </div>
+
 
     <div class="start-item">
         <img src="fnaf4.png">
@@ -1023,42 +1762,98 @@ transform-origin:top left;
     <div class="context-item">
         Görünüm
         <span>▶</span>
+
+        <div class="submenu">
+
+            <div onclick="setIconSize('large')">
+                Büyük Simgeler
+            </div>
+
+            <div onclick="setIconSize('small')">
+                Küçük Simgeler
+            </div>
+
+        </div>
     </div>
+
 
     <div class="context-item">
         Sırala
         <span>▶</span>
+
+        <div class="submenu">
+
+            <div onclick="sortIcons('name')">
+                Ada Göre
+            </div>
+
+            <div onclick="sortIcons('type')">
+                Türe Göre
+            </div>
+
+<div onclick="toggleAutoArrange()">
+    <span id="auto-check">✓</span>
+    Otomatik Düzenle
+</div>
+
+        </div>
+
     </div>
 
-    <div class="context-item">
+
+    <div class="context-item" onclick="refreshDesktop()">
         Yenile
     </div>
 
+
     <div class="context-separator"></div>
+
 
     <div class="context-item">
         Yeni
         <span>▶</span>
+
+        <div class="submenu">
+
+            <div>
+                Klasör
+            </div>
+
+            <div>
+                Metin Belgesi
+            </div>
+
+        </div>
+
     </div>
+
 
     <div class="context-separator"></div>
 
-    <div class="context-item">
-        Ekran çözünürlüğü
-    </div>
 
-<div class="context-item" onclick="openWindow('win-properties','Özellikler')">
+<div class="context-item" onclick="changeWallpaper(); contextMenu.style.display='none';">
+    Arka Plan Değiştir
+</div>
+
+<div class="context-item" onclick="openWindow('win-properties','Özellikler'); contextMenu.style.display='none';">
     Özellikler
 </div>
+
 
 </div>
 
 <div id="taskbar">
-    <div id="start-btn"><img src="start-icon.png" width="20"><span>Başlat</span></div>
+    <div id="start-btn">
+        <img src="start-icon.png" width="20">
+        <span>Başlat</span>
+    </div>
+
     <div id="task-items"></div>
-    <div class="taskbar-date">14.06.2010</div>
-</div>
-</div>
+
+    <div class="taskbar-date">
+        14.06.2010
+    </div>
+</div> <!-- BUNU EKLE -->
 
 <script>
 
@@ -1095,7 +1890,9 @@ let icons={
     "win-note":"note.png",
     "win-browser":"browser.png",
     "win-properties":"properties.png",
-    "win-photo":"photo.png"
+    "win-photo":"photo.png",
+    "win-paint":"paint.png",
+    "win-wallpaper":"wallpaper.png"
 };
 
 
@@ -1176,41 +1973,36 @@ function minWindow(id){
 
 function maxWindow(id){
 
-    const win=document.getElementById(id);
+const win=document.getElementById(id);
+
+if(win.dataset.max!="1"){
+
+    win.dataset.max="1";
+
+    win.dataset.left=win.offsetLeft;
+    win.dataset.top=win.offsetTop;
+    win.dataset.width=win.offsetWidth;
+    win.dataset.height=win.offsetHeight;
 
 
-    if(win.dataset.max!="1"){
+    win.style.left="0px";
+    win.style.top="0px";
+
+    win.style.width="100%";
+    win.style.height="calc(100vh - 40px)";
 
 
-        win.dataset.max="1";
+}else{
 
+    win.dataset.max="0";
 
-        win.dataset.left=win.offsetLeft+"px";
-        win.dataset.top=win.offsetTop+"px";
-        win.dataset.width=win.offsetWidth+"px";
-        win.dataset.height=win.offsetHeight+"px";
+    win.style.left=win.dataset.left+"px";
+    win.style.top=win.dataset.top+"px";
 
+    win.style.width=win.dataset.width+"px";
+    win.style.height=win.dataset.height+"px";
 
-        win.style.left="0px";
-        win.style.top="0px";
-        win.style.width="100vw";
-        win.style.height="calc(100vh - 40px)";
-
-
-    }
-    else{
-
-
-        win.dataset.max="0";
-
-
-        win.style.left=win.dataset.left;
-        win.style.top=win.dataset.top;
-        win.style.width=win.dataset.width;
-        win.style.height=win.dataset.height;
-
-
-    }
+}
 
 }
 
@@ -1218,32 +2010,40 @@ function maxWindow(id){
 
 
 
-// BOOT
+// BIOS
 
 setTimeout(()=>{
 
-    document.getElementById("boot").style.display="none";
+    // BIOS ekranını kapat
+    document.getElementById("bios").style.display="none";
 
-    let welcome = document.getElementById("welcome");
-    welcome.style.display="flex";
+    // XP Boot ekranını aç
+    document.getElementById("boot").style.display="flex";
 
+    // XP Boot 4 saniye sürsün
     setTimeout(()=>{
 
-        welcome.style.display="none";
-        document.getElementById("desktop").style.display="block";
+        document.getElementById("boot").style.display="none";
 
-    },2500);
+        let welcome=document.getElementById("welcome");
+        welcome.style.display="flex";
 
+        setTimeout(()=>{
 
-    let xpSound = document.getElementById("xp-start");
+            welcome.style.display="none";
 
-    xpSound.volume = 0.6;
+            document.getElementById("desktop").style.display="block";
+            document.getElementById("taskbar").style.display="flex";
 
-    xpSound.play()
-    .catch(()=>{});
+        },2500);
 
+        let xpSound=document.getElementById("xp-start");
+        xpSound.volume=0.6;
+        xpSound.play().catch(()=>{});
 
-},4000);
+    },4000);
+
+},3000);
 
 
 	
@@ -1343,6 +2143,7 @@ document.querySelectorAll(".window").forEach(win=>{
 
     const header = win.querySelector(".win-header");
 
+
     header.addEventListener("mousedown",function(e){
 
         activeWindow = win;
@@ -1356,18 +2157,43 @@ document.querySelectorAll(".window").forEach(win=>{
 
 });
 
+let mouseX = 0;
+let mouseY = 0;
+let dragging = false;
+
 document.addEventListener("mousemove",function(e){
 
     if(!activeWindow) return;
 
-    activeWindow.style.left = (e.clientX-offsetX)+"px";
-    activeWindow.style.top = (e.clientY-offsetY)+"px";
+    mouseX = e.clientX - offsetX;
+    mouseY = e.clientY - offsetY;
+
+    if(!dragging){
+        dragging=true;
+        moveWindow();
+    }
 
 });
+
+
+function moveWindow(){
+
+    if(!activeWindow){
+        dragging=false;
+        return;
+    }
+
+    activeWindow.style.left = mouseX + "px";
+    activeWindow.style.top = mouseY + "px";
+
+    requestAnimationFrame(moveWindow);
+
+}
 
 document.addEventListener("mouseup",function(){
 
     activeWindow = null;
+    dragging = false;
 
 });
 
@@ -1446,6 +2272,9 @@ contextMenu.addEventListener("click",function(e){
     e.stopPropagation();
 
 });
+
+
+
 
 function openPhoto(src){
 
@@ -1607,6 +2436,685 @@ progress.addEventListener("input",function(){
     }
 
 });
+
+const biosLines = [
+"CPU : Intel(R) Core(TM)2 Duo E4500 @ 2.20GHz",
+"Memory Testing : 2048MB OK",
+"Detecting IDE Drives...",
+"Primary Master : ST380011A",
+"Primary Slave  : None",
+"Checking NVRAM...",
+"USB Devices : 2 Keyboard, 1 Mouse",
+"Auto Detecting AHCI...",
+"Initializing USB Controllers...",
+"Press DEL to enter SETUP"
+];
+
+const biosBox=document.getElementById("bios-lines");
+
+let i=0;
+
+const biosInterval=setInterval(()=>{
+
+    if(i>=biosLines.length){
+        clearInterval(biosInterval);
+        return;
+    }
+
+    const line=document.createElement("div");
+    line.textContent=biosLines[i];
+    biosBox.appendChild(line);
+
+    i++;
+
+},250);
+
+document.addEventListener("keydown",function(e){
+
+    if(document.getElementById("bios").style.display=="none") return;
+
+    if(e.key==="Tab"){
+
+        e.preventDefault();
+
+        const post=document.getElementById("bios-post");
+
+        if(post.style.display==="block"){
+
+            post.style.display="none";
+
+        }else{
+
+            post.style.display="block";
+
+        }
+
+    }
+
+});
+
+const canvas=document.getElementById("paintCanvas");
+const ctx=canvas.getContext("2d");
+
+let drawing=false;
+
+canvas.addEventListener("mousedown",e=>{
+
+    drawing=true;
+
+    ctx.beginPath();
+
+    ctx.moveTo(e.offsetX,e.offsetY);
+
+});
+
+canvas.addEventListener("mousemove",e=>{
+
+    if(!drawing) return;
+
+    ctx.lineTo(e.offsetX,e.offsetY);
+
+    ctx.strokeStyle=document.getElementById("paintColor").value;
+    ctx.lineWidth=document.getElementById("paintSize").value;
+
+    ctx.lineCap="round";
+    ctx.lineJoin="round";
+
+    ctx.stroke();
+
+});
+
+canvas.addEventListener("mouseup",()=>drawing=false);
+canvas.addEventListener("mouseleave",()=>drawing=false);
+
+function clearCanvas(){
+
+    ctx.fillStyle="white";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+}
+
+// ================= IE7 BROWSER =================
+
+
+let ieSites = [
+
+{
+name:"Bing",
+url:"https://www.bing.com//"
+},
+
+{
+name:"FufuDows XP",
+url:"https://vonfritzsche.github.io/fufuberuu/"
+},
+
+{
+name:"YigitForum",
+url:"https://vonfritzsche.github.io/https-imlosingmymental.github.io/"
+}
+
+];
+
+
+
+
+
+function openIE(){
+
+loadIE(0);
+
+}
+
+
+
+function loadIE(index){
+
+
+document.getElementById("win-frame").src=
+ieSites[index].url;
+
+
+document.getElementById("win-url").value=
+ieSites[index].url;
+
+
+document.querySelectorAll(".ie-tab")
+.forEach((tab,i)=>{
+
+tab.classList.toggle(
+"active",
+i===index
+);
+
+});
+
+
+}
+
+
+
+function goIE(){
+
+let url=document.getElementById("win-url").value;
+
+document.getElementById("win-frame").src=url;
+
+}
+
+
+
+
+function reloadIE(){
+
+document.getElementById("win-frame").contentWindow.location.reload();
+
+}
+
+
+
+function homeIE(){
+
+loadIE(0);
+
+}
+
+
+
+const eskiOpenWindow=openWindow;
+
+
+openWindow=function(id,title){
+
+eskiOpenWindow(id,title);
+
+
+if(id=="win-browser"){
+
+setTimeout(()=>{
+
+openIE();
+
+},200);
+
+}
+
+}
+
+
+
+
+function changeWallpaper(){
+    openWallpaper();
+}
+
+
+
+
+
+function setIconSize(size){
+
+let icons=document.querySelectorAll(".icon img");
+let boxes=document.querySelectorAll(".icon");
+
+
+if(size=="large"){
+    icons.forEach(i=>{
+        i.style.width="70px";
+    });
+
+    boxes.forEach(i=>{
+        i.style.width="90px";
+    });
+}
+
+
+if(size=="small"){
+    icons.forEach(i=>{
+        i.style.width="35px";
+    });
+
+    boxes.forEach(i=>{
+        i.style.width="55px";
+    });
+}
+
+} // sadece bu kalacak
+
+
+
+function sortIcons(type){
+
+
+let icons=[
+...document.querySelectorAll(".icon-area .icon")
+];
+
+
+
+icons.sort((a,b)=>{
+
+
+if(type=="name" || type=="auto"){
+
+return a.innerText.localeCompare(
+b.innerText,
+"tr"
+);
+
+}
+
+
+if(type=="type"){
+
+
+return a.querySelector("img").src
+.localeCompare(
+b.querySelector("img").src
+);
+
+
+}
+
+
+});
+
+
+
+let area=document.querySelector(".icon-area");
+
+
+
+area.innerHTML="";
+
+
+
+let columns=5;
+
+let col;
+
+
+
+icons.forEach((icon,index)=>{
+
+
+if(index%columns===0){
+
+col=document.createElement("div");
+
+col.style.display="flex";
+col.style.flexDirection="column";
+col.style.gap="25px";
+
+area.appendChild(col);
+
+}
+
+
+col.appendChild(icon);
+
+
+
+});
+
+
+
+}
+
+function toggleSub(el){
+
+    document.querySelectorAll(".context-item")
+    .forEach(i=>{
+        if(i!==el)
+            i.classList.remove("open");
+    });
+
+    el.classList.toggle("open");
+
+}
+
+let autoArrange=true;
+let draggedIcon=null;
+
+document.querySelectorAll(".icon").forEach(icon=>{
+
+
+
+    icon.addEventListener("dragover",e=>{
+        e.preventDefault();
+    });
+
+
+    icon.addEventListener("drop",()=>{
+
+        if(draggedIcon && draggedIcon!==icon){
+
+            let parent=icon.parentNode;
+
+            parent.insertBefore(
+                draggedIcon,
+                icon
+            );
+
+        }
+
+
+
+});
+
+
+
+
+
+icon.draggable=!autoArrange;
+
+
+icon.addEventListener("dragstart",()=>{
+
+    draggedIcon=icon;
+
+});
+
+if(autoArrange){
+
+    icon.draggable=false;
+
+}else{
+
+    icon.draggable=true;
+
+}
+
+icon.addEventListener("mousedown",()=>{
+
+    icon.draggable=!autoArrange;
+
+});
+
+
+icon.addEventListener("dragover",e=>{
+
+    e.preventDefault();
+
+});
+
+
+icon.addEventListener("drop",()=>{
+
+    if(draggedIcon && draggedIcon!==icon){
+
+        let parent=icon.parentNode;
+
+        let a=[...parent.children];
+
+        let from=a.indexOf(draggedIcon);
+        let to=a.indexOf(icon);
+
+
+        if(from<to)
+            parent.insertBefore(draggedIcon,icon.nextSibling);
+        else
+            parent.insertBefore(draggedIcon,icon);
+
+    }
+
+});
+
+
+});
+
+function refreshDesktop(){
+
+    const icons = document.querySelectorAll(".icon");
+
+    icons.forEach((icon,index)=>{
+
+        setTimeout(()=>{
+
+            icon.style.transition="0.2s";
+            icon.style.opacity="0";
+            icon.style.transform="scale(.7)";
+
+            setTimeout(()=>{
+
+                icon.style.opacity="1";
+                icon.style.transform="scale(1)";
+
+            },200);
+
+        }, index * 30);
+
+    });
+
+}
+
+
+
+document.querySelectorAll(".submenu div").forEach(sub=>{
+
+    sub.addEventListener("click",e=>{
+
+        e.stopPropagation();
+
+        contextMenu.style.display="none";
+
+    });
+
+});
+
+
+
+
+function toggleAutoArrange(){
+
+    autoArrange=!autoArrange;
+
+    document.getElementById("auto-check").innerText =
+    autoArrange ? "✓" : "";
+
+
+    if(autoArrange){
+
+        sortIcons("auto");
+
+    }
+
+}
+
+const wallpapers=[
+
+"wall1.png",
+"wall2.gif",
+"wall3.png",
+"wall4.png"
+
+];
+
+
+function openWallpaper(){
+
+openWindow(
+"win-wallpaper",
+"Arka Plan"
+);
+
+
+let box=document.getElementById("wall-list");
+
+box.innerHTML="";
+
+
+wallpapers.forEach(img=>{
+
+
+let div=document.createElement("div");
+
+div.className="wall-item";
+
+
+div.innerHTML=
+`
+<img src="${img}">
+<br>
+${img}
+`;
+
+
+div.onclick=function(){
+
+    document.body.style.backgroundImage = `url("${img}")`;
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundAttachment = "fixed";
+
+};
+
+
+box.appendChild(div);
+
+
+});
+
+
+}
+
+let submenuTimers = new Map();
+
+document.querySelectorAll(".context-item").forEach(item=>{
+
+    const submenu = item.querySelector(".submenu");
+    if(!submenu) return;
+
+
+
+
+
+    function openSubmenu(){
+
+        clearTimeout(submenuTimers.get(item));
+
+        submenuTimers.set(item,setTimeout(()=>{
+
+            item.classList.add("open");
+
+        },1500));
+
+    }
+
+
+    function closeSubmenu(){
+
+        clearTimeout(submenuTimers.get(item));
+
+        setTimeout(()=>{
+
+            if(
+                !item.matches(":hover") &&
+                !submenu.matches(":hover")
+            ){
+                item.classList.remove("open");
+            }
+
+        },100);
+
+    }
+
+
+    // Mouse üstüne gelince 1.5 saniye bekle
+    item.addEventListener("mouseenter",()=>{
+
+        openSubmenu();
+
+    });
+
+
+    // Direkt tıklayınca anında aç
+    item.addEventListener("click",e=>{
+
+        e.stopPropagation();
+
+        clearTimeout(submenuTimers.get(item));
+
+        item.classList.add("open");
+
+    });
+
+
+    // Mouse ayrılırsa kapat
+    item.addEventListener("mouseleave",()=>{
+
+        closeSubmenu();
+
+    });
+
+
+    // Sağ panelin üstüne gelince kapanmasın
+    submenu.addEventListener("mouseenter",()=>{
+
+        clearTimeout(submenuTimers.get(item));
+
+        item.classList.add("open");
+
+    });
+
+
+    // Sağ panelden çıkınca kapat
+submenu.addEventListener("mouseleave",()=>{
+
+    item.classList.remove("open");
+
+});
+
+}); // <-- BUNU EKLE
+
+function openSite(url){
+
+    document.getElementById("win-frame").src = url;
+    document.getElementById("win-url").value = url;
+
+}
+
+function goIE(){
+
+    let url=document.getElementById("win-url").value;
+
+    if(!url.startsWith("http")){
+        url="https://"+url;
+    }
+
+    openSite(url);
+
+}
+
+function reloadIE(){
+
+    document.getElementById("win-frame").contentWindow.location.reload();
+
+}
+
+function homeIE(){
+
+    openSite("https://www.bing.com");
+
+}
+
+function openMinecraft(){
+
+    const win=document.getElementById("minecraft-window");
+    const frame=document.getElementById("minecraft-frame");
+
+    win.style.display="flex";
+
+    frame.src="minecraft/index.html";
+
+}
+
+
+function closeMinecraft(){
+
+    document.getElementById("minecraft-window").style.display = "none";
+    document.getElementById("minecraft-frame").src = "";
+}
 
 </script>
 </body>
